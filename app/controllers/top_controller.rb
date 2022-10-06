@@ -2,6 +2,7 @@ class TopController < ApplicationController
     # session[:login_uid]がnilでなければ main.html.erbを、nilなら login.html.erbをrenderする。
     require 'bcrypt'
     def main
+        session[:login_uid] ||= nil
         if session[:login_uid]
             render "main"
         else
@@ -34,5 +35,8 @@ class TopController < ApplicationController
     def logout
         session.delete(:login_uid)
         redirect_to root_path
+    end
+    def account_delete
+        @user = User.find_by(uid: session[:login_uid])
     end
 end
